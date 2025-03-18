@@ -1,51 +1,39 @@
-# Interactive functionality
+# Server-Side Website
 
-Ontwerp en maak voor een opdrachtgever een interactieve toepassing die voor iedereen toegankelijk is.
+Ontwerp en ontwikkel een server-side website voor een opdrachtgever.
+
 
 ## Context
 
-Deze leertaak hoort bij Sprint 9 "The Web is for Everyone". Dit is een leertaak die je uitvoert voor een opdrachtgever.
+Deze leertaak hoort bij Sprint 8, "Server-Side Rendering". Dit is een leertaak die je individueel uitvoert voor een opdrachtgever.
 
-<!-- In het college S09W1-01-Sprintplanning-The-Web-Is-For-Everyone wordt de opdracht uitgelegd. -->
-
-<!--
-Bij deze leertaak hoort de deeltaak:
-- [Wireflow](https://github.com/fdnd-task/wireflow) (Sprint 05)
-- [UML Diagram](https://github.com/fdnd-task/uml-diagram) (Sprint 08)
-- UI States
-- [Progressive Enhancement](https://github.com/fdnd-task/progressive-enhancement)
--->
 
 ## Doel van deze opdracht
 
-Tim Berners-Lee, de uitvinder van het World Wide Web zei:
+Je leert hoe je server-side data kunt gebruiken voor het maken van een website voor een opdrachtgever.
 
-> “_The power of the Web is in its universality. Access by everyone regardless of disability is an essential aspect._”
-
-Het doel van deze opdracht is te leren hoe je een interactieve website maakt, die voor _iedereen_ toegankelijk is. De focus van deze sprint ligt op _Progressive Enhancement_, _Toegankelijkheid_ en testresultaten gebruiken voor het verbeteren van een ontwerp.
 
 ## Werkwijze
 
-In deze sprint leer je hoe je data naar Directus kan POSTen met behup van een formulier, hoe je dit weer toont op de pagina, en hoe je ervoor zorgt dat dit het altijd(!) doet.
+Voor deze leertaak krijg je eerst een sprint planning met de opdrachtgever. Tijdens de sprint planning bespreek je de taken van het project board en de content in de database. Elke opdrachtgever heeft content voor de website in een database. Met een REST API kun je deze content gebruiken voor het maken van de website.
 
-Deze leertaak wordt behandeld in Sprint 9. Er worden verschillende workshops aangeboden:
 
-- [Sprint Planning](sprint-planning.md)
-- [User Generated Content](user-generated-content.md)
-- [UI States](ui-states.md)
-- [Code/Design-Review - UI states](code-design-review-ui-states.md)
-- [Deeltaak Progressive Enhancement](https://github.com/fdnd-task/progressive-enhancement/)
-- [Browsers en Feature detection](browsers-en-feature-detection.md)
-- [Code/Design-Review - Post](code-design-review-post.md)
-- [Client-Side Fetch met Server-Side partials](client-side-fetch.md)
-- [Wrap-up](wrap-up.md)
+Deze leertaak wordt behandeld in Sprint 8. er worden verschillende workshops aangeboden
 
-## Definition of done
+- [Sprint planning](sprint-planning.md)
+- [Templating met JSON data](templating-met-json.md)
+- [Code/Design-review](code-design-review.md)
+- [Routing, Request en Response](routing-request-response.md)
+- [Data mapping en filteren](data-mapping-en-filtering.md)
+- [Wrap up](wrap-up.md)
 
+
+## Criteria
 Deze opdracht is done als:
 
-- [ ] Jouw gebruikers kunnen iets achterlaten of toevoegen op jouw website (user generated content)
+- [ ] Je hebt een website ontworpen en gemaakt met NodeJS, Express en Liquid en een REST API
 - [ ] Je website is online gepubliceerd
-- [ ] Je hebt interactieve functionaliteit ontworpen en gemaakt met NodeJS, Express, Liquid en een REST API en HTML, CSS en client-side JS
-- [ ] Je hebt je werk getest in verschillende browsers en devices en de tests gedocumenteerd in je wiki
-- [ ] Je hebt in de Readme bij 'Kenmerken' uitgelegd wat Progressive Enhancement is en hoe je dit hebt toegepast
+- [ ] Je hebt gestructureerd gewerkt met behulp van issues en je hebt het proces bijgehouden in jouw Learning Journal
+- [ ] Je hebt het briefing-debriefing proces doorlopen met de opdrachtgever en je vorderingen gepresenteerd tijdens de sprint review
+- [ ] Je toont aan dat je in de analyse- en ontwerpfase verschillende methoden en technieken hebt ingezet om te inventariseren wat er moet gebeuren
+- [ ] Je toont aan dat je in de bouwfase verschillende server-side en client-side methoden en technieken hebt ingezet om het ontwerp te realiseren
