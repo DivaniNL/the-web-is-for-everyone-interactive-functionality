@@ -1,0 +1,68 @@
+{% render 'partials/head.liquid' title: "Mediahuis" style: thisstation  v: "o" %}
+{% render 'partials/header.liquid' v: "o" thisstation: thisstation title: "Mediahuis" %}{% comment %} Version : Other {% endcomment %}
+
+<div class="main-wrapper-container">
+    {% render 'partials/aside.liquid' 
+    stationNameGenerated: stationNameGenerated,
+    radiostations: radiostations,
+    thisstation: thisstation
+    %}
+    <main class="radio-station">
+        <div class="part-sticky top-wrapper">
+            <nav class="sticky-menu sticky-menu-top">
+                <ul>
+                    <li><a href="/station/{{ stationNameGeneratedEncoded }}/programmering/">Programmering</a></li>
+                    <li><a class="active" href="#">DJ's</a></li>
+                    <li><a href="#">Playlist</a></li>
+                    <li><a href="#">Frequenties</a></li>
+                </ul>
+            </nav>
+        </div>
+
+
+        {% if loggedIn %}
+            Hallo {{LoggedInUser}}
+            <section class="deejay-overview">
+                <h1 class="text-xxl">DJ's</h1>
+                {% if deejays.size %}
+                    <ul>
+                        {% for deejay in deejays %}
+                            <li>
+                                <section>
+                                    <img src="https://fdnd-agency.directus.app/assets/{{deejay.mh_users_id.cover}}" alt="foto van {{deejay.mh_users_id.name}}" title="foto van {{deejay.mh_users_id.name}}">
+                                    <h2>{{deejay.mh_users_id.name}}</h2>
+                                    <form method="post" action="/station/{{stationNameGeneratedEncoded}}/djs/like/{{deejay.mh_users_id.id}}">
+                                        <button type="submit">Like ❤️</button>
+                                </form>
+                                {% if deejay.likes > 0 %}
+                                    {{deejay.likes}} Likes
+                                    {% if deejay.likedByThisUser %}
+                                        {{LoggedInUser}} likes this DJ
+                                    {% endif %}
+                                {% endif %}
+                                
+                                </section>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                
+            </section>
+
+        {% else %}
+
+            <form method="post" action="/login/{{ stationNameGeneratedEncoded }}">
+                <label>Username: <input name="username"></label>
+                <button>Inloggen</button>
+            </form>
+
+        {% endif %}
+    </main>
+    {%  render 'partials/foot.liquid' thisstation: thisstation, stationName: stationNameGenerated v: "o" %}
+</div>
+</body>
+</html>
+
+{% comment %} https://shopify.github.io/liquid/tags/iteration/#continue {% endcomment %}
+
+

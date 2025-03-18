@@ -5,7 +5,8 @@ import express from 'express'
 // Importeer de Liquid package (ook als dependency via npm geïnstalleerd)
 import { Liquid } from 'liquidjs';
 import fs from 'fs';
-
+let loggedIn = false;
+let loggedInUser = '';
 console.log('Test')
 
 const showsResponse = await fetch('https://fdnd-agency.directus.app/items/mh_shows');
@@ -14,8 +15,8 @@ const showsResponseJSON = await showsResponse.json();
 const showResponse = await fetch('https://fdnd-agency.directus.app/items/mh_show');
 const showResponseJSON = await showResponse.json();
 
-const usersResponse = await fetch('https://fdnd-agency.directus.app/items/mh_users');
-const usersResponseJSON = await usersResponse.json();
+const uniqueAllUsersResponse = await fetch('https://fdnd-agency.directus.app/items/mh_users?groupBy=full_name');
+const uniqueAllUsersResponseJSON = await uniqueAllUsersResponse.json();
 
 const radiostationsResponse = await fetch('https://fdnd-agency.directus.app/items/mh_radiostations?sort=id');
 const radiostationsResponseJSON = await radiostationsResponse.json();
@@ -203,69 +204,114 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
   });
 });
 
-const personResponse1 = await fetch('https://fdnd.directus.app/items/person/?sort=name&fields=name');
-const personResponse1JSON = await personResponse1.json();
-app.get('/experiment1', async function (request, response) {
-  response.render('12-04-experiment-directus.liquid', {persons: personResponse1JSON.data})
+
+app.get('/station/:name/djs', async function (request, response) {
+  console.log("test");
+  const stationArr = request.params.name;
+  const stationURL = radiostations.find(station => station.name === stationArr);
+  let stationID = stationURL.id;
+  // alle djs voor huidige radiostation
+  const userInfo = "https://fdnd-agency.directus.app/items/mh_shows?fields=show.users.mh_users_id.*,show.users.mh_show_id.*";
+  const userInfoFilterPart = "&filter={\"show\":{\"radiostation\":{\"id\":\"" + stationID + "\"}}}&limit=-1";
+  const completeUserFetch = await fetch(userInfo + userInfoFilterPart);
+  const userInfoJSON = await completeUserFetch.json();
+
+
+  //alle unieke djs voor huidig radiostation - CHAD
+  function UniqueUsersForStation() {
+    var keys = userInfoJSON.data.map(function (value) { 
+      return value.show.users.map(user => user.mh_users_id.full_name).join(",");
+    });
+  
+    return userInfoJSON.data.filter(function (value, index) {
+      return keys.indexOf(value.show.users.map(user => user.mh_users_id.full_name).join(",")) === index;
+    });
+  }
+  var distinctShows = UniqueUsersForStation();
+  var distinctDJs = distinctShows.flatMap(show => show.show.users)
+  .filter((user, index, self) =>
+    index === self.findIndex(u => u.mh_users_id.id === user.mh_users_id.id)
+  );
+  // END OF CHAD
+
+
+
+
+  for (let i = 0; i < distinctDJs.length; i++) {
+    let onedj_id = distinctDJs[i].mh_users_id.id;
+    // haal alle likes op van de huidige dj
+    const likesForPersonResponse = await fetch(`https://fdnd-agency.directus.app/items/mh_messages/?filter[for][_eq]=Dylan/Like/UserID/` + onedj_id)
+    const likesForPersonResponseJSON = await likesForPersonResponse.json();
+    let likesData = likesForPersonResponseJSON.data;
+    // voeg de likes toe aan de dj objecten
+    distinctDJs[i].likes = likesForPersonResponseJSON.data.length;
+
+    var userString = "UserLoggedin/" + loggedInUser;
+    var result = likesData.find(({from}) => userString == from);
+    if(result != undefined){
+      distinctDJs[i].likedByThisUser = true;
+    }else{
+      distinctDJs[i].likedByThisUser = false;
+    }
+  }
+
+
+
+
+
+
+
+  fs.writeFile('test.json', JSON.stringify(distinctDJs, null, 2), (err) => {
+    if (err) {
+      console.error('Error writing to test.json:', err);
+    } else {
+      console.log('Successfully wrote to test.json');
+    }
+  });
+  response.render('deejays.liquid', {
+    stationNameGenerated: stationArr,
+    stationNameGeneratedEncoded: encodeURIComponent(stationArr),
+    radiostations: radiostationsResponseJSON.data,
+    thisstation: stationID,
+    deejays: distinctDJs,
+    loggedIn: loggedIn,
+    LoggedInUser: loggedInUser
+  });
 });
-
-const personResponse2 = await fetch('https://fdnd.directus.app/items/person/?sort=name&fields=name&filter[name][_istarts_with]=d');
-const personResponse2JSON = await personResponse2.json();
-app.get('/experiment2', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.render('12-04-experiment-directus.liquid', {persons: personResponse2JSON.data})
-});
-
-
-const personResponse3 = await fetch('https://fdnd.directus.app/items/person/?fields=name&filter[_or][0][name][_istarts_with]=d&filter[_or][1][name][_istarts_with]=k');
-const personResponse3JSON = await personResponse3.json();
-app.get('/experiment3', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.render('12-04-experiment-directus.liquid', {persons: personResponse3JSON.data})
-});
-
-const personResponse4 = await fetch('https://fdnd.directus.app/items/person/?fields=name,birthdate&filter[birthdate][_nnull]=true');
-const personResponse4JSON = await personResponse4.json();
-app.get('/experiment4', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.render('12-04-experiment-directus.liquid', {persons: personResponse4JSON.data})
-});
-
-const personResponse5 = await fetch('https://fdnd.directus.app/items/person/?fields=name,birthdate&filter[year(birthdate)][_eq]=2002');
-const personResponse5JSON = await personResponse5.json();
-app.get('/experiment5', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.render('12-04-experiment-directus.liquid', {persons: personResponse5JSON.data})
-});
-
-
-
-
-const personResponse2_1 = await fetch('https://fdnd.directus.app/items/person/?sort=name&limit=-1');
-const personResponse2_1JSON = await personResponse2_1.json();
-app.get('/experiment2-1', async function (request, response) {
-  response.render('12-04-experiment-loop.liquid', {persons: personResponse2_1JSON.data})
-});
-
-
-
-
-
-app.get('/', async function (request, response) {
-  // Je zou hier data kunnen opslaan, of veranderen, of wat je maar wilt
-  // Er is nog geen afhandeling van een POST, dus stuur de bezoeker terug naar /
-  response.redirect(303, '/')
+app.use(express.urlencoded({ extended: true }));
+app.post('/login/:name', function (request, response) {
+  loggedIn = true;
+  loggedInUser = request.body.username;
+  response.redirect(303, '/station/' + request.params.name + '/djs')
 })
 
+
+app.post("/station/:name/djs/like/:id", async function (request, response) {
+  if(loggedInUser != ""){
+    loggedInUser = loggedInUser;
+  }
+  else{
+    loggedInUser = "Onbekende gebruiker";
+  }
+  await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
+  method: "POST",
+  body: JSON.stringify({
+    for: `Dylan/Like/UserID/` + request.params.id,
+    from: "UserLoggedin/" + loggedInUser,
+    text: "Like",
+  }),
+  headers: {
+    "Content-Type": "application/json;charset=UTF-8",
+  },
+});
+
+response.redirect(303, "/station/" + request.params.name + "/djs/")
+})
 
 
 // Stel het poortnummer in waar Express op moet gaan luisteren
 // Lokaal is dit poort 8000, als dit ergens gehost wordt, is het waarschijnlijk poort 80
-app.set('port', process.env.PORT || 8000)
+app.set('port', process.env.PORT || 2000)
 
 // Start Express op, haal daarbij het zojuist ingestelde poortnummer op
 app.listen(app.get('port'), function () {
