@@ -21,3 +21,6 @@ header.header-o.radio-2{
         background-image: none;
     }
 }
+p{
+    color: var(--color-text-main);
+}

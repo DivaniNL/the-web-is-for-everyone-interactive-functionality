@@ -5,6 +5,7 @@ import express from 'express'
 // Importeer de Liquid package (ook als dependency via npm geïnstalleerd)
 import { Liquid } from 'liquidjs';
 import fs from 'fs';
+import { error } from 'console';
 let loggedIn = false;
 let loggedInUser = '';
 console.log('Test')
@@ -61,6 +62,12 @@ app.set('views', './views')
 app.get('/', async function (request, response) {
    response.render('index.liquid', {radiostations: radiostationsResponseJSON.data})
 })
+
+
+app.get('/error', async function (request, response) {
+  response.render('error.liquid', {error: request.query.error, radiostations: radiostationsResponseJSON.data});
+})
+
 
 // https://www.npmjs.com/package/path-to-regexp#optional - Optional parameters
 app.get('/station/:name/programmering{/:dayname}', async function (request, response) {
@@ -209,6 +216,9 @@ app.get('/station/:name/djs', async function (request, response) {
   console.log("test");
   const stationArr = request.params.name;
   const stationURL = radiostations.find(station => station.name === stationArr);
+  if(stationURL == undefined){
+    response.redirect(303, '/error?error=noStation');
+  }
   let stationID = stationURL.id;
   // alle djs voor huidige radiostation
   const userInfo = "https://fdnd-agency.directus.app/items/mh_shows?fields=show.users.mh_users_id.*,show.users.mh_show_id.*";
@@ -268,6 +278,7 @@ app.get('/station/:name/djs', async function (request, response) {
       console.log('Successfully wrote to test.json');
     }
   });
+  console.log(request.query.error);
   response.render('deejays.liquid', {
     stationNameGenerated: stationArr,
     stationNameGeneratedEncoded: encodeURIComponent(stationArr),
@@ -275,13 +286,19 @@ app.get('/station/:name/djs', async function (request, response) {
     thisstation: stationID,
     deejays: distinctDJs,
     loggedIn: loggedIn,
-    LoggedInUser: loggedInUser
+    LoggedInUser: loggedInUser,
+    likeStatus: request.query.likeStatus
   });
 });
 app.use(express.urlencoded({ extended: true }));
 app.post('/login/:name', function (request, response) {
   loggedIn = true;
   loggedInUser = request.body.username;
+  response.redirect(303, '/station/' + request.params.name + '/djs')
+})
+app.get('/logout/:name', function (request, response) {
+  loggedIn = false;
+  loggedInUser = '';
   response.redirect(303, '/station/' + request.params.name + '/djs')
 })
 
@@ -294,18 +311,27 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
     loggedInUser = "Onbekende gebruiker";
   }
   await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
-  method: "POST",
-  body: JSON.stringify({
-    for: `Dylan/Like/UserID/` + request.params.id,
-    from: "UserLoggedin/" + loggedInUser,
-    text: "Like",
-  }),
-  headers: {
-    "Content-Type": "application/json;charset=UTF-8",
-  },
-});
+    method: "POST",
+    body: JSON.stringify({
+      for: `Dylan/Like/UserID/` + request.params.id,
+      from: "UserLoggedin/" + loggedInUser,
+      text: "Like",
+    }),
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+    }
 
-response.redirect(303, "/station/" + request.params.name + "/djs/")
+    return response.blob();
+  })
+  .catch(() => {
+    response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+  });
+
+  response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
 })
 
 

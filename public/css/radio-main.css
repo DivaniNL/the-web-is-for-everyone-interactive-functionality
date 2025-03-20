@@ -385,4 +385,54 @@ main.radio-station{
             gap: 24px;
         }
     }
+    &.deejays{
+        .part-sticky{
+            &.top-wrapper{
+                display: block;
+                .box-notification{
+                    svg{
+                        width: 17px;
+                        height: 17px;
+                    }
+                }
+            }
+        }
+        section.deejay-overview{
+            >ul{
+                list-style-type: none;
+                width: calc(100% - 30px);
+                li{
+                    float: left;
+                    width: calc(50% - 20px);
+                    margin-left: 20px;
+                    margin-bottom: 20px;
+                    aspect-ratio: 1/1;
+                    article{
+                        position: relative;
+                        height: 100%;
+                        img{
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            z-index: 0;
+
+                        }
+                        .wrapper-likes, h2.text-m, form.form-rating{
+                            position: relative;
+                            z-index: 1;
+                        }
+                    }
+                    @media (min-width: 680px){
+                        width: calc(33.333% - 20px);
+                    }
+                    @media (min-width: 1200px){
+                        width: calc(25% - 20px);
+                    }
+                }
+            }
+        }
+    }
 }
