@@ -68,6 +68,10 @@ app.get('/error', async function (request, response) {
   response.render('error.liquid', {error: request.query.error, radiostations: radiostationsResponseJSON.data});
 })
 
+app.get('/test', async function (request, response) {
+  response.render('test.liquid');
+})
+
 
 // https://www.npmjs.com/package/path-to-regexp#optional - Optional parameters
 app.get('/station/:name/programmering{/:dayname}', async function (request, response) {
@@ -278,7 +282,6 @@ app.get('/station/:name/djs', async function (request, response) {
       console.log('Successfully wrote to test.json');
     }
   });
-  console.log(request.query.error);
   response.render('deejays.liquid', {
     stationNameGenerated: stationArr,
     stationNameGeneratedEncoded: encodeURIComponent(stationArr),
