@@ -1,0 +1,97 @@
+main.deejays{
+    padding: 1rem;
+}
+
+.part-sticky.top-wrapper{
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 5;
+}
+.part-sticky.top-wrapper .box-notification{
+    padding: 20px 32px;
+}
+.box-notification{
+    display: flex;
+    align-items: center;
+}
+.box-notification.ideal{
+    background-color: #256707;
+    color: #fff;
+}
+.box-notification.ideal svg > *, .box-notification.error svg > * {
+    fill: #fff;
+}
+.box-notification.error{
+    background-color: #FF3737;
+    color: #fff;
+}
+.part-sticky.topwrapper::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    height: 10px;
+    background-image:linear-gradient(to bottom,#FAFAFA calc(100% - 2rem),rgba(255,255,255,0));
+}
+.part-sticky.top-wrapper .box-notification svg{
+    width: 17px;
+    height: 17px;
+    margin-right: 16px;
+}
+.box-auth{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.box-auth a{
+    height: 24px;
+    appearance: none;
+    border: 0;
+    transition: 0.2s ease;
+    display: flex;
+    width: fit-content;
+    background: #FE0170;
+    color: white;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.box-auth a:hover{
+    background: #011564;
+}
+/* Noti bar */
+.m-top{
+    margin-top: 59px;
+}
+
+
+.deejay-overview article{
+    position: relative;
+    width: 180px;
+    display: flex;
+    margin-bottom: 1rem;
+}
+.deejay-overview article::before{
+    background: linear-gradient(180deg, rgba(28, 30, 37, 0.00) 0.14%, rgba(28, 30, 37, 0.65) 99.86%);
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+}
+.deejay-overview article img{
+    object-fit: cover;
+    width: 100%;
+}
+.deejay-overview article .wrapper-likes, .deejay-overview article .content{
+    position: absolute;
+    z-index: 1;
+}
+.deejay-overview article .content{
+    bottom: 0;
+    color: white;
+}

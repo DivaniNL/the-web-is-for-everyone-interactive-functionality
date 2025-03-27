@@ -1,121 +1,73 @@
-{% render 'partials/head.liquid' title: "Mediahuis" style: thisstation  v: "o" %}
-{% render 'partials/header.liquid' v: "o" thisstation: thisstation title: "Mediahuis" %}{% comment %} Version : Other {% endcomment %}
-
-<div class="main-wrapper-container">
-    {% render 'partials/aside.liquid' 
-    stationNameGenerated: stationNameGenerated,
-    radiostations: radiostations,
-    thisstation: thisstation
-    %}
-    <main class="radio-station deejays">
-        <div class="part-sticky top-wrapper">
-            <nav class="sticky-menu sticky-menu-top">
-                <ul>
-                    <li><a href="/station/{{ stationNameGeneratedEncoded }}/programmering/">Programmering</a></li>
-                    <li><a class="active" href="#">DJ's</a></li>
-                    <li><a href="#">Playlist</a></li>
-                    <li><a href="#">Frequenties</a></li>
-                </ul>
-            </nav>
-            {% if likeStatus and loggedIn %} 
-                <div class="box-notification">
-
-                    {% case likeStatus %}
-                        {% when "error" %}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <title>Kruis</title>
-                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/>
-                            </svg>
-                            Er is een fout opgetreden bij het Liken van de DJ. Probeer het later opnieuw.
-                        {% when "ideal" %}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <title>Vink</title>
-                                <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
-                            </svg>
-                            Bedankt voor je feedback!
-                        {% else %}
-                            Er heeft een onverwachte fout opgetreden.
-                            
-                    {% endcase %}
-                </div>
-            {% endif %}
-        </div>
-
-        {% if loggedIn %}
-            <div class="box-auth">
-                Hallo {{LoggedInUser}}<a href="/logout/{{ stationNameGeneratedEncoded }}">Uitloggen</a>
-            </div>
-
-           
-        
-
-            <section class="deejay-overview">
-                <h1 class="text-xxl">DJ's</h1>
-                {% if deejays.size > 0 %}
-                    <ul>
-                        {% for deejay in deejays %}
-                            <li>
-                                <article>
-                                    {% if deejay.likes > 0 %}
-
-                                        <div class="wrapper-likes{% if deejay.likedByThisUser %} likedbyyou{% endif %}">
-                                            {{deejay.likes}} 
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                                                <title>Hart</title>
-                                                <path d="M9.5 3.68463C8.53077 2.06925 6.91538 0.938477 4.97692 0.938477C2.23077 0.938477 0.130768 3.03848 0.130768 5.78463C0.130768 11.1154 3.03846 11.9231 9.5 18.0616C15.9615 11.9231 18.8692 11.1154 18.8692 5.78463C18.8692 3.03848 16.7692 0.938477 14.0231 0.938477C12.0846 0.938477 10.4692 2.06925 9.5 3.68463Z" fill="#FE0170"/>
-                                            </svg>
-                                        </div>
-                                    
-                                    {% endif %}
-
-                                    <img src="https://fdnd-agency.directus.app/assets/{{deejay.mh_users_id.cover}}" alt="foto van {{deejay.mh_users_id.full_name}}" title="foto van {{deejay.mh_users_id.full_name}}">
-
-                                    <h2 class="text-m">{{deejay.mh_users_id.full_name}}</h2>
-
-                                    <form method="post" class="form-rating"
-                                        {% if deejay.likedByThisUser %}
-                                            action="/station/{{stationNameGeneratedEncoded}}/djs/unlike/{{deejay.mh_users_id.id}}"
-                                        {% else %}
-                                            action="/station/{{stationNameGeneratedEncoded}}/djs/like/{{deejay.mh_users_id.id}}"
-                                            >
-                                        {% endif %}
-
-                                        <button type="submit">
-                                            
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-                                                <title>Hart</title>
-                                                <path d="M9.5 3.68463C8.53077 2.06925 6.91538 0.938477 4.97692 0.938477C2.23077 0.938477 0.130768 3.03848 0.130768 5.78463C0.130768 11.1154 3.03846 11.9231 9.5 18.0616C15.9615 11.9231 18.8692 11.1154 18.8692 5.78463C18.8692 3.03848 16.7692 0.938477 14.0231 0.938477C12.0846 0.938477 10.4692 2.06925 9.5 3.68463Z" fill="#FE0170"/>
-                                            </svg>    
-                                        
-                                            <span class="submittxt">Like</span>
-
-                                        </button>
-
-                                    </form>
-                            
-                                </article>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="text-xl">OOPS</p>
-                    <p>Er zijn nog geen DJ's toegevoegd aan deze zender.</p>
-                {% endif %}
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Deejays</title>
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/deejays.css">
+    </head>
+    <body>
+        <div class="main-wrapper-container ">
+            <main class="radio-station deejays">
+                <div class="part-sticky top-wrapper">
                 
-            </section>
+                    {% if likeStatus and loggedIn %} 
+                        <div class="box-notification {{likeStatus}}">
 
-        {% else %}
+                            {% case likeStatus %}
+                                {% when "error" %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <title>Kruis</title>
+                                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/>
+                                    </svg>
+                                    Er is een fout opgetreden bij het Liken van de DJ. Probeer het later opnieuw.
+                                {% when "ideal" %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                        <title>Vink</title>
+                                        <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/>
+                                    </svg>
+                                    Bedankt voor je feedback!
+                                {% else %}
+                                    Er heeft een onverwachte fout opgetreden.
+                                    
+                            {% endcase %}
+                        </div>
+                    {% endif %}
+                </div>
 
-            <form method="post" action="/login/{{ stationNameGeneratedEncoded }}">
-                <label>Username: <input name="username"></label>
-                <button>Inloggen</button>
-            </form>
+                {% if loggedIn %}
+                    <div class="box-auth {% if likeStatus %} m-top {% endif %}">
+                        Hallo {{LoggedInUser}}<a href="/logout/{{ stationNameGeneratedEncoded }}">Uitloggen</a>
+                    </div>
 
-        {% endif %}
-    </main>
-    {%  render 'partials/foot.liquid' thisstation: thisstation, stationName: stationNameGenerated v: "o" %}
-</div>
-</body>
+                
+                
+
+                    <section class="deejay-overview">
+                        <h1 class="text-xxl">DJ's</h1>
+                        {% if deejays.size > 0 %}
+                            {% for deejay in deejays %}
+                                {%  render 'partials/dj.liquid' deejay: deejay, stationName: stationNameGenerated, stationNameGeneratedEncoded: stationNameGeneratedEncoded %}
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-xl">OOPS</p>
+                            <p>Er zijn nog geen DJ's toegevoegd aan deze zender.</p>
+                        {% endif %}
+                        
+                    </section>
+
+                {% else %}
+
+                    <form method="post" action="/login/{{ stationNameGeneratedEncoded }}" {% if likeStatus %} class="m-top" {% endif %}>
+                        <label>Username: <input name="username"></label>
+                        <button>Inloggen</button>
+                    </form>
+
+                {% endif %}
+            </main>
+        </div>
+    </body>
 </html>
 
 {% comment %} https://shopify.github.io/liquid/tags/iteration/#continue {% endcomment %}

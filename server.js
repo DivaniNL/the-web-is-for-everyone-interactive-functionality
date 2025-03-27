@@ -52,7 +52,7 @@ app.use(express.static('public'))
 
 // Stel Liquid in als 'view engine'
 const engine = new Liquid();
-app.engine('liquid', engine.express()); 
+app.engine('liquid', engine.express());
 
 // Stel de map met Liquid templates in
 // Let op: de browser kan deze bestanden niet rechtstreeks laden (zoals voorheen met HTML bestanden)
@@ -60,12 +60,12 @@ app.set('views', './views')
 
 // Maak een GET route voor de index (meestal doe je dit in de root, als /)
 app.get('/', async function (request, response) {
-   response.render('index.liquid', {radiostations: radiostationsResponseJSON.data})
+  response.render('index.liquid', { radiostations: radiostationsResponseJSON.data })
 })
 
 
 app.get('/error', async function (request, response) {
-  response.render('error.liquid', {error: request.query.error, radiostations: radiostationsResponseJSON.data});
+  response.render('error.liquid', { error: request.query.error, radiostations: radiostationsResponseJSON.data });
 })
 
 app.get('/test', async function (request, response) {
@@ -76,26 +76,26 @@ app.get('/test', async function (request, response) {
 // https://www.npmjs.com/package/path-to-regexp#optional - Optional parameters
 app.get('/station/:name/programmering{/:dayname}', async function (request, response) {
   const dayNames = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
-  
+
   const thisWeekshows = [];
   let daysResponse;
   let dayID;
-  if(request.params.dayname == undefined){
+  if (request.params.dayname == undefined) {
     daysResponse = await fetch('https://fdnd-agency.directus.app/items/mh_day?fields=*,shows.mh_shows_id.show');
   }
-  else{
+  else {
     dayID = dayNames.findIndex(day => day === request.params.dayname);
     console.log(dayID);
-    daysResponse = await fetch('https://fdnd-agency.directus.app/items/mh_day?fields=*,shows.mh_shows_id.show&filter={"sort":"'+ dayID +'"}');
+    daysResponse = await fetch('https://fdnd-agency.directus.app/items/mh_day?fields=*,shows.mh_shows_id.show&filter={"sort":"' + dayID + '"}');
   }
   const daysResponseJSON = await daysResponse.json();
-  
+
   daysResponseJSON.data.forEach(day => {
     const genDate = new Date(day.date);
     const dayofWeekJSON = genDate.getDay();
     const shows = day.shows;
     const showIDs = [];
-    shows.forEach(show => { 
+    shows.forEach(show => {
       const show_id = show.mh_shows_id.show;
       showIDs.push(show_id);
     });
@@ -107,15 +107,15 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
   });
   // console.log(thisWeekshows);
   // console.log("dit waren alle shows gesoorteerd op dag");
-  
+
   const now = new Date()
   let startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() - 5)
   // DAGEN VAN DEZE WEEK voor sticky dates
   const thisWeek = [];
-  
+
   // Chat GPT-3
   function getDatesOfCurrentWeek(refDate = new Date()) {
-  
+
     const datesOfWeek = [];
     for (let i = 0; i < 8; i++) { // Loop through 8 days to include next Monday
       const date = new Date(startOfWeek);
@@ -123,10 +123,10 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
       console.log(date);
       datesOfWeek.push(date);
     }
-  
+
     return datesOfWeek;
   }
-  
+
   const datesOfCurrentWeek = getDatesOfCurrentWeek();
   datesOfCurrentWeek.forEach(date => {
     const dateString = date.toISOString().split('T')[0];
@@ -135,7 +135,7 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
       dayOfWeek: date.getDay()
     });
   });
-  
+
   // End of Chat GPT code
 
 
@@ -152,8 +152,8 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
   const showsforStationJSON = await showsforStation.json();
   const nestedShows = [];
 
-  showsforStationJSON.data.forEach(function(show) {
-  
+  showsforStationJSON.data.forEach(function (show) {
+
     nestedShows.push({
       ...show.show,
       from: show.from,
@@ -166,15 +166,15 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
     const updatedShows = day.shows
       .filter(show => show !== undefined && show !== null) // Filter out null values before mapping
       .map(show => {
-        
+
         // console.log("Processing show ID: " + show);
         let dayShowID = show;
         const showObj = nestedShows.find(s => s.id == dayShowID);
         return showObj;
       })
       .filter(show => show !== undefined && show !== null);// Hiermee map je als het door de array heen, en filter je de nulls eruit.
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
-      updatedShows.sort((a, b) => a.from.localeCompare(b.from));
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+    updatedShows.sort((a, b) => a.from.localeCompare(b.from));
     return { ...day, shows: updatedShows };
   });
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
@@ -198,9 +198,9 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
     todayName = dayNames[today];
   } else {
     today = dayID;  // Parse the dayid from the request params
-    
+
   }
-  
+
   response.render('station.liquid', {
     showsforStation: showsforStationJSON.data,
     stationNameGenerated: stationArr,
@@ -220,7 +220,7 @@ app.get('/station/:name/djs', async function (request, response) {
   console.log("test");
   const stationArr = request.params.name;
   const stationURL = radiostations.find(station => station.name === stationArr);
-  if(stationURL == undefined){
+  if (stationURL == undefined) {
     response.redirect(303, '/error?error=noStation');
   }
   let stationID = stationURL.id;
@@ -233,19 +233,19 @@ app.get('/station/:name/djs', async function (request, response) {
 
   //alle unieke djs voor huidig radiostation - CHAD
   function UniqueUsersForStation() {
-    var keys = userInfoJSON.data.map(function (value) { 
+    var keys = userInfoJSON.data.map(function (value) {
       return value.show.users.map(user => user.mh_users_id.full_name).join(",");
     });
-  
+
     return userInfoJSON.data.filter(function (value, index) {
       return keys.indexOf(value.show.users.map(user => user.mh_users_id.full_name).join(",")) === index;
     });
   }
   var distinctShows = UniqueUsersForStation();
   var distinctDJs = distinctShows.flatMap(show => show.show.users)
-  .filter((user, index, self) =>
-    index === self.findIndex(u => u.mh_users_id.id === user.mh_users_id.id)
-  );
+    .filter((user, index, self) =>
+      index === self.findIndex(u => u.mh_users_id.id === user.mh_users_id.id)
+    );
   // END OF CHAD
 
 
@@ -261,10 +261,10 @@ app.get('/station/:name/djs', async function (request, response) {
     distinctDJs[i].likes = likesForPersonResponseJSON.data.length;
 
     var userString = "UserLoggedin/" + loggedInUser;
-    var result = likesData.find(({from}) => userString == from);
-    if(result != undefined){
+    var result = likesData.find(({ from }) => userString == from);
+    if (result != undefined) {
       distinctDJs[i].likedByThisUser = true;
-    }else{
+    } else {
       distinctDJs[i].likedByThisUser = false;
     }
   }
@@ -307,10 +307,10 @@ app.get('/logout/:name', function (request, response) {
 
 
 app.post("/station/:name/djs/like/:id", async function (request, response) {
-  if(loggedInUser != ""){
+  if (loggedInUser != "") {
     loggedInUser = loggedInUser;
   }
-  else{
+  else {
     loggedInUser = "Onbekende gebruiker";
   }
   await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
@@ -330,23 +330,67 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
 
     return response.blob();
   })
-  .catch(() => {
-    response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
-  });
+    .catch(() => {
+      response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+    });
 
   response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
 })
+app.post("/station/:name/djs/unlike/:id", async function (request, response) {
+  if (loggedInUser != "") {
+    loggedInUser = loggedInUser;
+  }
+  else {
+    loggedInUser = "Onbekende gebruiker";
+  }
+
+  const compareData = await fetch(
+    `https://fdnd-agency.directus.app/items/mh_messages/?filter={"for":"Dylan/Like/UserID/` + request.params.id + `"}`,
+  );
+  const compareJson = await compareData.json();
+
+  // vergelijking, als het bestaat, pak de id en delete gebaseerd hierop
+  const itemToDelete = compareJson.data.find(
+    (person) => person.from === "UserLoggedin/" + loggedInUser
+  )?.id;
+
+  if (itemToDelete) {
 
 
-// Stel het poortnummer in waar Express op moet gaan luisteren
-// Lokaal is dit poort 8000, als dit ergens gehost wordt, is het waarschijnlijk poort 80
-app.set('port', process.env.PORT || 2000)
 
-// Start Express op, haal daarbij het zojuist ingestelde poortnummer op
-app.listen(app.get('port'), function () {
-  // Toon een bericht in de console en geef het poortnummer door
-  console.log(`Application started on http://localhost:${app.get('port')}`)
-})
+
+    await fetch(
+      `https://fdnd-agency.directus.app/items/mh_messages/${itemToDelete}?filter={"for":"Dylan/Like/UserID/` + request.params.id + `"}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+      }
+    ).then((response) => {
+      if (!response.ok) {
+        response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+      }
+
+      return response.blob();
+    })
+      .catch(() => {
+        response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+      });
+
+    response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
+  }
+});
+
+  // Stel het poortnummer in waar Express op moet gaan luisteren
+  // Lokaal is dit poort 8000, als dit ergens gehost wordt, is het waarschijnlijk poort 80
+  app.set('port', process.env.PORT || 2000)
+
+  // Start Express op, haal daarbij het zojuist ingestelde poortnummer op
+  app.listen(app.get('port'), function () {
+    // Toon een bericht in de console en geef het poortnummer door
+    console.log(`Application started on http://localhost:${app.get('port')}`)
+  })
 
 
 
