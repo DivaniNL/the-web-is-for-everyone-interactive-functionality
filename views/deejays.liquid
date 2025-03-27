@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/css/deejays.css">
     </head>
     <body>
-        <div class="main-wrapper-container ">
+        <div class="main-wrapper-container {% unless likeStatus %} no-status {% endunless %}">
             <main class="radio-station deejays">
                 <div class="part-sticky top-wrapper">
                 
@@ -44,7 +44,7 @@
                 
                 
 
-                    <section class="deejay-overview">
+                    <section class="deejay-overview {% if deejays.size > 0 %} valid {% endif %}">
                         <h1 class="text-xxl">DJ's</h1>
                         {% if deejays.size > 0 %}
                             {% for deejay in deejays %}
