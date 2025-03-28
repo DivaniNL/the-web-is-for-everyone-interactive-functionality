@@ -331,10 +331,10 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
     return response.blob();
   })
     .catch(() => {
-      response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
+      return response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
     });
 
-  response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
+  return response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
 })
 app.post("/station/:name/djs/unlike/:id", async function (request, response) {
   if (loggedInUser != "") {
