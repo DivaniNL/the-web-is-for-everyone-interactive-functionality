@@ -89,7 +89,9 @@ a{
   padding: 0;
   box-sizing: border-box;
 }
+@supports (grid-template-columns: 0 1fr){
 .main-wrapper-container{
+
     display: grid;
     grid-template-columns: 0 1fr;
     grid-template-rows: 1fr auto;
@@ -102,6 +104,7 @@ a{
       transition: 1s ease;
       grid-column: 2/-1;
     }
+  }
 
     
 }
