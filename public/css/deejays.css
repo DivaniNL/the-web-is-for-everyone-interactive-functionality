@@ -196,7 +196,7 @@
     transition: 0.2s ease;
     display: flex;
     width: fit-content;
-    background: #FE0170;
+    background: #980144;
     color: white;
     padding: 1rem;
     justify-content: center;
@@ -256,23 +256,23 @@
   padding: 0 14px;
   gap: 10px;
   border-radius: 30px;
-  color: #FE0170;
+  color: #980144;
   background: white;
   font-family: 'BrutalType';
   font-weight: 500;
-  border: 3px solid #FE0170;
+  border: 3px solid #980144;
   transition: 0.2s ease;
   position: relative;
   flex-direction: row;
 }
 
 .deejay-overview article .wrapper-likes svg > *{
-    fill: #FE0170;
+    fill: #980144;
     transition: 0.2s ease;
 }
 .deejay-overview article .wrapper-likes.likedbyyou, .deejay-overview article .wrapper-likes:hover, .deejay-overview article .wrapper-likes:focus{
     border-color: #fff;
-    background-color: #FE0170;
+    background-color: #980144;
     color: #fff;
 }
 
@@ -295,7 +295,7 @@
     font-size: 1rem;
 }
 .deejay-overview article form button .submittxt{
-  border-left: 3px solid #FE0170;
+  border-left: 3px solid #980144;
   padding: 7px 0 7px 7px;
 }
 .deejay-overview article form button.likedbyyou .submittxt{
@@ -363,7 +363,7 @@
 .deejays .login-form button{
   max-width: fit-content;
   cursor: pointer;
-  background-color: #FE0170;
+  background-color: #980144;
   border-radius: 8px;
   padding: 0.5rem 1rem;
   text-transform: uppercase;
@@ -382,11 +382,11 @@
 }
 .deejays .login-form button:hover, .deejays .login-form button:focus{
   background-color: #fff;
-  color: #FE0170;
-  border: 2px solid #FE0170;
+  color: #980144;
+  border: 2px solid #980144;
 }
 .deejays .login-form button:hover svg > *, .deejays .login-form button:focus svg > *{
-  fill: #FE0170;
+  fill: #980144;
 }
 @media (min-width: 680px){
   .deejays .login-form {
