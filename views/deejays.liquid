@@ -55,8 +55,8 @@
                     </section>
 
                 {% else %}
-
-                    <form method="post" action="/login/{{ stationNameGeneratedEncoded }}" {% if likeStatus %} class="m-top" {% endif %}>
+                    <h1 class="text-xxl login-txt"> Log in met je gebruikersnaam om toegang te krijgen tot het Deejay overzicht</h1>
+                    <form method="post" action="/login/{{ stationNameGeneratedEncoded }}"  class="{% if likeStatus %} m-top {% endif %}login-form">
                         <label>Username: <input name="username"></label>
                         <button>Inloggen</button>
                     </form>
