@@ -225,6 +225,9 @@
     background-image: url('../assets/pulse-3.svg');
     background-size: cover;
 }
+.deejay-overview article.loading-card img, .deejay-overview article.loading-card .content{
+  filter: blur(4px);
+}
 .deejay-overview article::before{
     background: linear-gradient(180deg, rgba(28, 30, 37, 0.00) 0.14%, rgba(28, 30, 37, 0.65) 99.86%);
     position: absolute;
@@ -270,6 +273,7 @@
   transition: 0.2s ease;
   position: relative;
   flex-direction: row;
+  overflow: hidden;
 }
 
 .deejay-overview article .wrapper-likes svg > *{
@@ -285,6 +289,59 @@
 .deejay-overview article .wrapper-likes.likedbyyou svg > *{
     fill: #fff;
 }
+
+/* Like animations */
+.deejay-overview article .wrapper-likes .like-count.liked{
+  animation: slideNumberIn 0.3s ease-in forwards;
+  animation-iteration-count: 1;
+}
+@keyframes slideNumberIn {
+  0% {
+    translate: 0 -150%;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
+.deejay-overview article .wrapper-likes .like-count.like{
+  animation: slideNumberOut 0.3s ease-in forwards;
+  animation-iteration-count: 1;
+}
+@keyframes slideNumberOut {
+  0% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 150%;
+  }
+}
+/* Unlike animations (reversed) */
+.deejay-overview article .wrapper-likes .like-count.unlike{
+  animation: slideNumberOutReverse 0.3s ease-in forwards;
+  animation-iteration-count: 1;
+}
+@keyframes slideNumberOutReverse {
+  0% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 -150%;
+  }
+}
+.deejay-overview article .wrapper-likes .like-count.unliked{
+  animation: slideNumberInReverse 0.3s ease-in forwards;
+  animation-iteration-count: 1;
+}
+@keyframes slideNumberInReverse {
+  0% {
+    translate: 0 -150%;
+  }
+  100% {
+    translate: 0 0;
+  }
+}
+
 .deejay-overview article form button{
     background: none;
     border: none;
@@ -399,3 +456,9 @@
     flex-direction: row;
   }
 }
+
+
+
+
+
+

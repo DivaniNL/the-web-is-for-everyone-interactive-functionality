@@ -6,6 +6,7 @@ import express from 'express'
 import { Liquid } from 'liquidjs';
 import fs from 'fs';
 import { error } from 'console';
+
 let loggedIn = false;
 let loggedInUser = '';
 console.log('Test')
@@ -336,6 +337,9 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
 
   return response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
 })
+
+
+
 app.post("/station/:name/djs/unlike/:id", async function (request, response) {
   if (loggedInUser != "") {
     loggedInUser = loggedInUser;
