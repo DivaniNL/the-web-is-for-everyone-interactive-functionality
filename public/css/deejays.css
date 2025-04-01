@@ -220,6 +220,11 @@
     margin-bottom: 1rem;
     justify-content: center;
 }
+/* Loading state */
+.deejay-overview article.loading-card{
+    background-image: url('../assets/pulse-3.svg');
+    background-size: cover;
+}
 .deejay-overview article::before{
     background: linear-gradient(180deg, rgba(28, 30, 37, 0.00) 0.14%, rgba(28, 30, 37, 0.65) 99.86%);
     position: absolute;
@@ -232,6 +237,7 @@
 .deejay-overview article img{
     object-fit: cover;
     width: 100%;
+    z-index: -1;
 }
 .deejay-overview article .wrapper-likes, .deejay-overview article .content{
     position: absolute;

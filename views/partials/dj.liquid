@@ -1,10 +1,10 @@
-<article>
+<article class="card-{{deejay.mh_users_id.id}}">
 
     <img src="https://fdnd-agency.directus.app/assets/{{deejay.mh_users_id.cover}}" alt="foto van {{deejay.mh_users_id.full_name}}" title="foto van {{deejay.mh_users_id.full_name}}">
     <div class="content">
         <h2 class="text-m">{{deejay.mh_users_id.full_name}}</h2>
 
-        <form method="post" class="form-rating"
+        <form method="post" data-enhanced="{{deejay.mh_users_id.id}}" class="form-rating"
             {% if deejay.likedByThisUser %}
                 action="/station/{{stationNameGeneratedEncoded}}/djs/unlike/{{deejay.mh_users_id.id}}">
             {% else %}
