@@ -134,6 +134,7 @@
                     if (updatedLikeCount) {
                         if(type == "unlike"){
                             updatedLikeCount.classList.add('unliked');
+                            document.querySelector('.wrapper-likes').classList.remove('likedbyyou');
                         } else {    
                             updatedLikeCount.classList.add('liked');
                         }
