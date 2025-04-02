@@ -359,30 +359,14 @@ app.post("/station/:name/djs/unlike/:id", async function (request, response) {
   )?.id;
 
   if (itemToDelete) {
-
-
-
-
-    await fetch(
-      `https://fdnd-agency.directus.app/items/mh_messages/${itemToDelete}?filter={"for":"Dylan/Like/UserID/` + request.params.id + `"}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8",
-        },
-      }
-    ).then((response) => {
-      if (!response.ok) {
-        response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
-      }
-
-      return response.blob();
-    })
-      .catch(() => {
-        response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
-      });
-
-    response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
+    const deleteResponse = await fetch(`https://fdnd-agency.directus.app/items/mh_messages/${itemToDelete}?filter={"for":"Dylan/Like/UserID/` + request.params.id + `"}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+      },
+    });
+    console.log("status in server" + deleteResponse.status);
+    response.redirect(303, "/station/" + request.params.name + "/djs");
   }
 });
 
