@@ -188,6 +188,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1rem;
+    margin-top: 1rem;
 }
 .box-auth a{
     height: 24px;

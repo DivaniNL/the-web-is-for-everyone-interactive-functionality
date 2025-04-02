@@ -314,7 +314,7 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
   else {
     loggedInUser = "Onbekende gebruiker";
   }
-  await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
+  await fetch("https://fdnd-agency.directus.app/items/mh_messagcddfdfdfes/", {
     method: "POST",
     body: JSON.stringify({
       for: `Dylan/Like/UserID/` + request.params.id,
