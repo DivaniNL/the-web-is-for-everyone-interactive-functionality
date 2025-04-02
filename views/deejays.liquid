@@ -93,7 +93,7 @@
                         body: new URLSearchParams(new FormData(form))
                     });
                     console.log(response);
-                    //if (response.url.includes('error')) {
+                    if (!response.ok) {
                         console.log('test failed');
 
                         document.querySelector('.box').classList.add('box-notification');
@@ -105,7 +105,8 @@
                                 </svg>
                                 Er is een fout opgetreden bij het Liken van de DJ. Probeer het later opnieuw.
                             `;     
-                    //}else{
+                    }
+                    //else{
                         const responseText = await response.text()
                         const parser = new DOMParser()
                         const responseDOM = parser.parseFromString(responseText, 'text/html')

@@ -314,28 +314,28 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
   else {
     loggedInUser = "Onbekende gebruiker";
   }
-  await fetch("https://fdnd-agency.directus.app/items/mh_messagcddfdfdfes/", {
+  
+
+  await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+    },
     body: JSON.stringify({
       for: `Dylan/Like/UserID/` + request.params.id,
       from: "UserLoggedin/" + loggedInUser,
       text: "Like",
     }),
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-  }).then((response) => {
-    if (!response.ok) {
-      response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
-    }
 
-    return response.blob();
-  })
-    .catch(() => {
-      return response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=error");
-    });
+  });
+  if (!response.ok) {
+    console.log(" error state + redirect dus")
+  }
+  else{
+    // Hier redirect - ideal state
+    return response.redirect(303, "/station/" + request.params.name + "/djs",{response: response});
+  }
 
-  return response.redirect(303, "/station/" + request.params.name + "/djs?likeStatus=ideal");
 })
 
 
