@@ -217,10 +217,8 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
 });
 
 
-app.get('/station/:name/djs', async function (request, response) {
+app.get('/station/:name/djs{/likeStatus/:likeStatus}', async function (request, response) {
 
-  console.log("test");
-  console.log(request);
   const stationArr = request.params.name;
   const stationURL = radiostations.find(station => station.name === stationArr);
   if (stationURL == undefined) {
@@ -278,13 +276,20 @@ app.get('/station/:name/djs', async function (request, response) {
 
 
 
+  
   fs.writeFile('test.json', JSON.stringify(distinctDJs, null, 2), (err) => {
     if (err) {
       console.error('Error writing to test.json:', err);
     } else {
       console.log('Successfully wrote to test.json');
     }
-  });
+  });  
+  console.log(request.params);
+  if (request.params.likeStatus){
+    let likeStatus = parseInt(request.params.likeStatus);
+    console.log(likeStatus);
+    response.status(likeStatus);
+  }
   response.render('deejays.liquid', {
     stationNameGenerated: stationArr,
     stationNameGeneratedEncoded: encodeURIComponent(stationArr),
@@ -316,7 +321,7 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
     loggedInUser = "Onbekende gebruiker";
   }
   
-
+  // Deze link is nu legitiem (200 status) maar als je de link aanpast naar een ongeldige endpoint krijg je een 403 error.
   const likeResponse = await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
     method: "POST",
     headers: {
@@ -329,8 +334,8 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
     }),
 
   });
-  response.redirect(303, "/station/" + request.params.name + "/djs/");
-
+  console.log("status in server" + likeResponse.status);
+  response.redirect(303, "/station/" + request.params.name + "/djs/likeStatus/" + likeResponse.status);
 })
 
 
