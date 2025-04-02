@@ -224,8 +224,11 @@
 .deejay-overview article.loading-card{
     background-image: url('../assets/pulse-3.svg');
     background-size: cover;
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-.deejay-overview article.loading-card img, .deejay-overview article.loading-card .content{
+.deejay-overview article.loading-card img{
   filter: blur(4px);
 }
 .deejay-overview article::before{
