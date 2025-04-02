@@ -218,7 +218,9 @@ app.get('/station/:name/programmering{/:dayname}', async function (request, resp
 
 
 app.get('/station/:name/djs', async function (request, response) {
+
   console.log("test");
+  console.log(request);
   const stationArr = request.params.name;
   const stationURL = radiostations.find(station => station.name === stationArr);
   if (stationURL == undefined) {
@@ -291,7 +293,6 @@ app.get('/station/:name/djs', async function (request, response) {
     deejays: distinctDJs,
     loggedIn: loggedIn,
     LoggedInUser: loggedInUser,
-    likeStatus: request.query.likeStatus
   });
 });
 app.use(express.urlencoded({ extended: true }));
@@ -316,7 +317,7 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
   }
   
 
-  await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
+  const likeResponse = await fetch("https://fdnd-agency.directus.app/items/mh_messages/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -328,13 +329,7 @@ app.post("/station/:name/djs/like/:id", async function (request, response) {
     }),
 
   });
-  if (!response.ok) {
-    console.log(" error state + redirect dus")
-  }
-  else{
-    // Hier redirect - ideal state
-    return response.redirect(303, "/station/" + request.params.name + "/djs",{response: response});
-  }
+  response.redirect(303, "/station/" + request.params.name + "/djs/");
 
 })
 
