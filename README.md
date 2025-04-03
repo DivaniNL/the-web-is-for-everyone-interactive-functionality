@@ -45,7 +45,9 @@ Zo niet, valt de browser terug naar een werkende versie.
 Tijdens Progressive Enhancement sta je dus stil bij de Core Functionality van een element. Deze meot altijd werken.
 Hieronder leg ik uit hoe ik elke stap heb nageleefd:
 
+
 **Bepaal de core Functionality**
+
 In het DJ overzicht was de core functionaliteit om de DJ's te bekijken, en DJ's te liken en Unliken
 
 **HTML en minimale CSS**
