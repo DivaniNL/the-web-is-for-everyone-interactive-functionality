@@ -87,13 +87,13 @@
                     }
                     likedCard.classList.add('loading-card');
 
-
                     // UPDATE DOM
                     const response = await fetch(form.action, {
                         method: form.method,
                         body: new URLSearchParams(new FormData(form))
                     });
                     console.log(response.status);
+                    // 200 = OK POST, 204 = OK DELETE
                     if (response.status !== 200 && response.status !== 204) {
                         console.log('test failed');
 
