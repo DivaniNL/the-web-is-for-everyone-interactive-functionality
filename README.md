@@ -1,83 +1,74 @@
 # Programmaoverzicht Mediahuis
 
 ## Beschrijving
-Voor deze sprint heb ik een show-overzichtpagina gemaakt per radiostation van Mediahuis. Het overzicht is dus te filteren op dag en zender.
-De website is hier te bekijken:
-
-https://server-side-rendering-server-side-website-g630.onrender.com/
-
-
-### Responsive
-
-Ik heb mijn Website responsive gemaakt
-
-Hieronder is elke breakpoint te zien:
-
-Mobiel: (320 t/m 680px)
-Home:
-
-![Screenshot (248)-portrait](https://github.com/user-attachments/assets/efc9425a-fbfb-437d-a3cc-7c62da2c04fa)
-
-Radiopagina:
+Voor deze sprint heb ik een DJ overzicht gemaakt waar je DJ's kan liken en unliken op basis van een gebruikersnaam.
+De site is hier te bekijken:
+[https://server-side-rendering-server-side-website-g630.onrender.com/](https://the-web-is-for-everyone-interactive-cq43.onrender.com/station/Radio%20Veronica/djs)
 
 
-![Screenshot (249)-portrait](https://github.com/user-attachments/assets/c6083139-444c-4530-b760-55f8d2f73c41)
-
-Tablet: (681 t/m 1200px)
-
-Home
-
-![Screenshot (251)-landscape](https://github.com/user-attachments/assets/0baeb86f-2bef-4cc6-a250-19c14d270f85)
+## Gebruik
 
 
-Radiopagina
-
-![Screenshot (250)-landscape](https://github.com/user-attachments/assets/ff4de801-a537-4eb1-a555-fac363ec4cb3)
-
-Desktop:
-
-Home:
+In onderstaande video is het te zien hoe je kan inloggen, kan liken en kan unliken. (voor unliken hoef je neit te refreshen, maar hier wilde ik laten zien dat de likes per persoon bleven staan)
 
 
-![Screenshot (253)-front](https://github.com/user-attachments/assets/4deb22b3-d13a-478d-b271-43a7e2d61a1d)
+https://github.com/user-attachments/assets/fb938c03-15d1-4e5e-b23d-2c64c988c3ca
 
-Radiopagina:
 
-![Screenshot (252)-front](https://github.com/user-attachments/assets/1012199d-3a94-43bf-8fd4-9f4bff1fbf62)
 
-Ik heb eerst het ontwerp utigebouwd in enkel HTML, en daarna d.m.v. een one-column layout te bouwen de mobiele versie afgerond. Als laatste heb ik de desktopversie gebouwd.
+Mijn User story:
+Als een bezoeker van de website, wil ik per radiostation de DJ’s kunnen liken en unliken, zodat ik mijn favoriete DJ’s kan ondersteunen en anderen kan zien welke DJ’s populair zijn.
+
 
 ## Ontwerpkeuzens
 
-Ik heb in het ontwerp voor de desktopversie een ontwerpwijziging doorgevoerd. Ik wilde het radiooverzicht horizontaal plaatsen, zodat ik hier later meerdere radiostations onder elkaar neer kon zetten.
+Ik heb een ontwerp gemaakt waar het DJ overzicht zal passen met de rest van de styling. 
+Ik heb tijdens het ontwerpen rekening gehouden met toegangkelijkheid door voldoende feedback en feedforward toe te passen. 
 
-Oude situatie (Desktop):
+https://github.com/user-attachments/assets/1d89578b-120c-4a8b-9d25-e5b07483362b
 
-![Screenshot (254)](https://github.com/user-attachments/assets/b1657792-c38c-4ea5-b533-45054a2520f7)
+In dit ontwerp heb ik **Feedforward** toegepast door een label toe te voegen aan de (Un)Like button.
 
-
-Mijn ontwerp (Desktop):
-
-![Screenshot (255)](https://github.com/user-attachments/assets/9787415d-0d50-4f24-b8c3-409224eaca0f)
-
-
-
- Inspiratie heb ik van het programmaoverzicht van Ziggo GO:
-
- ![Screenshot (256)](https://github.com/user-attachments/assets/942aef0d-ce6a-4421-aba9-1c0255c194d1)
-
+In dit ontwerp heb ik **Feedback** toegepast op meerdere manieren.
+1. Door de label te veranderen
+2. Door de achtergrondkleur en tekstkleur van de knop te veranderen als je hem geliked hebt t.o.v als je de DJ niet geliked hebt.
+3. Notificatiebalk boven (in video onder **Gebruik** is dit te zien)
 
 
 ## Kenmerken
+
+### Progressive Enhancement
+
+In dit project heb ik de gedachtegang van Progressive Enhancement toegepast. 
+Progressive-enhancement is geen techniek, maar meer een strategie, waarmee je ervoor kunt zorgen dat je website functioneel is voor iedereen. Extra functies worden toegepastr als browsers dit ondersteunen. 
+Zo niet, valt de browser terug naar een werkende versie.
+Tijdens Progressive Enhancement sta je dus stil bij de Core Functionality van een element. Deze meot altijd werken.
+Hieronder leg ik uit hoe ik elke stap heb nageleefd:
+
+**Bepaal de core Functionality**
+In het DJ overzicht was de core functionaliteit om de DJ's te bekijken, en DJ's te liken en Unliken
+
+**HTML en minimale CSS**
+
+Ik ben gaan kijken welke HTML-element(en) de core-functionaliteit vereist om een zo semantisch mogelijke oplossign te bieden voor dit probleem.
+Ik heb de like functie gemaakt middels een `<form>` element. De DJ kaarten in het overzicht zijn instanties van een `<article>`.
+Hierna heb ik wat kleuren van de huisstijl gebruikt om een one-column layout te bouwen.
+
+**Enhancement**
+
+Hierna heb ik met CSS animaties gemaakt en met JS front-end scripting gebruikt om, mits Fetch ondersteund wordt, de Likes/Unlikes uit te laten voeren zonder page-refresh
 
 ### NodeJS
 Met Node kan je server-side applicaties bouwen met JavaScript. In dit project wordt Node.js gebruikt om een webserver te draaien die de applicatie bedient.
 
 ### Express
-Express is een framework voor Node.js dat functies biedt voor het bouwen van sites. In dit project wordt Express gebruikt om routes te definiëren en HTTP-verzoeken(post en get) af te handelen.
+Express is een framework voor Node.js dat functies biedt voor het bouwen van sites. In dit project wordt Express gebruikt om routes te definiëren en HTTP-verzoeken(post,get,delete) af te handelen.
 
 ### Liquid
 Liquid is een template engine voor JavaScript en Ruby. Het wordt gebruikt om HTML te genereren met dynamische data. In dit project wordt Liquid gebruikt om de HTML-pagina's te renderen met data die wordt opgehaald van de whois FDND API.
+
+### Client Side Scripting
+In dit project is Client Side Scripting gebruikt om ervoor te zorgen dat post en delete-request uitge3voerd kunnen worden zonder dat een page-refresh nodig is.
 
 ### Projectstructuur
 Het project heeft de volgende structuur:
@@ -95,16 +86,11 @@ Een link kan dan zijn:
 /station/Radio%20Veronica/programmering/Woensdag
 
 ### Data ophalen en posten
-De data wordt opgehaald van de Directus API met behulp van `fetch`. Bijvoorbeeld, in de route `GET /` wordt de lijst van alle shwos voor het huidige radiostation opgehaald
-[https://github.com/halie404/connect-your-tribe-team-squad-page/blob/b9e69e0349ecfe795a16168affb88a333e4560f6/server.js#L12-L19](https://github.com/DivaniNL/server-side-rendering-server-side-website/blob/4d1b0923a39db5777dbb72cf61ae62acdcd83563/server.js#L135-L136)
+De data wordt opgehaald van de Directus API met behulp van `fetch`. Bijvoorbeeld, in de route `GET /` wordt de lijst van alle shows van het huidige station ingeladen. Hieruit worden alle gekoppelde Users gehaald om zo een overzicht te bouwen
+
 
 ### HTML renderen met data
-De HTML wordt gerenderd met Liquid templates. Bijvoorbeeld, in de route `GET /` wordt de homepagina geladen met de volgende code
-[https://github.com/halie404/connect-your-tribe-team-squad-page/blob/b9e69e0349ecfe795a16168affb88a333e4560f6/server.js#L22-L39](https://github.com/DivaniNL/server-side-rendering-server-side-website/blob/4d1b0923a39db5777dbb72cf61ae62acdcd83563/server.js#L60-L62)
-
-De Liquid template index.liquid gebruikt de data om dynamisch HTML te genereren:
-[
-https://github.com/halie404/connect-your-tribe-team-squad-page/blob/b9e69e0349ecfe795a16168affb88a333e4560f6/views/student.liquid#L22-L25](https://github.com/DivaniNL/server-side-rendering-server-side-website/blob/4d1b0923a39db5777dbb72cf61ae62acdcd83563/views/index.liquid#L4-L22)
+De HTML wordt gerenderd met Liquid templates. Bijvoorbeeld, in de route `GET /` worden de DJ's geladen met de volgende code
 
 ## Installatie
 
@@ -118,7 +104,7 @@ Om dit project lokaal te installeren en te draaien, volg je de onderstaande stap
 ### Stappen
 
 1. **Clone de repository**
-    - Ga naar de repository: [https://github.com/DivaniNL/server-side-rendering-server-side-website](https://github.com/DivaniNL/server-side-rendering-server-side-website)
+    - Ga naar de repository: [https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality](https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality)
     - Klik op Code (groene knop) -> Open with GitHub Desktop
     - Klik op Clone
     - Selecteer "For my own purposes"
@@ -138,7 +124,7 @@ Om dit project lokaal te installeren en te draaien, volg je de onderstaande stap
    ```
 
 5. **Open de applicatie in je browser**
-   - De server draait nu op `http://localhost:8000`. Open deze URL in je webbrowser om de applicatie te bekijken.
+   - De server draait nu op `http://localhost:2000`. Open deze URL in je webbrowser om de applicatie te bekijken.
 
 Volg deze stappen om de ontwikkelomgeving in te richten en aan de repository te kunnen werken. Als je vragen hebt of tegen problemen aanloopt, neem contact op met de projectbeheerder (Dylan).
 
