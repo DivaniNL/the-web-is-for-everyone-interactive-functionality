@@ -287,6 +287,9 @@ app.get('/station/:name/djs{/likeStatus/:likeStatus}', async function (request, 
   console.log(request.params);
   if (request.params.likeStatus){
     let likeStatus = parseInt(request.params.likeStatus);
+    if(likeStatus == 204) {
+      likeStatus = 200;
+    }
     console.log(likeStatus);
     response.status(likeStatus);
   }
@@ -366,7 +369,7 @@ app.post("/station/:name/djs/unlike/:id", async function (request, response) {
       },
     });
     console.log("status in server" + deleteResponse.status);
-    response.redirect(303, "/station/" + request.params.name + "/djs/likeStatus/"  + deleteResponse.status );
+    response.redirect(303, "/station/" + request.params.name + "/djs/likeStatus/" + deleteResponse.status);
   }
 });
 
