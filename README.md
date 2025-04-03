@@ -1,4 +1,4 @@
-# Programmaoverzicht Mediahuis
+# DJ-overzicht Mediahuis
 
 ## Beschrijving
 Voor deze sprint heb ik een DJ overzicht gemaakt waar je DJ's kan liken en unliken op basis van een gebruikersnaam.
@@ -45,7 +45,9 @@ Zo niet, valt de browser terug naar een werkende versie.
 Tijdens Progressive Enhancement sta je dus stil bij de Core Functionality van een element. Deze meot altijd werken.
 Hieronder leg ik uit hoe ik elke stap heb nageleefd:
 
+
 **Bepaal de core Functionality**
+
 In het DJ overzicht was de core functionaliteit om de DJ's te bekijken, en DJ's te liken en Unliken
 
 **HTML en minimale CSS**
@@ -79,18 +81,115 @@ Het project heeft de volgende structuur:
 ### Routes
 De routes worden gedefinieerd in server.js. Hier zijn enkele belangrijke routes:
 
-- `GET /`: De hoofdpagina van Mediahuis
-- `GET /station/:name{/programmering}{/:dayname}`: Haalt de radioprogrammas van een radiostation op. Het meegeven van een dag is optioneel.
-De naam van het radiostation is encrypted in de url. Zoals Radio%20Veronica.
+- `GET /`: De oude hoofdpagina van Mediahuis (niet veranderd)
+- `GET /station/:name/djs{/likeStatus/:likeStatus}`: Haalt de DJ's op per radiostation. Geeft een eventuele Likestatus mee (POST request statuscode)
+De naam van het radiostation is encrypted in de url. Zoals Radio%20Veronica. (dit is :name)
 Een link kan dan zijn:
-/station/Radio%20Veronica/programmering/Woensdag
+/station/Radio%20Veronica/djs
 
 ### Data ophalen en posten
+
+**GET**
 De data wordt opgehaald van de Directus API met behulp van `fetch`. Bijvoorbeeld, in de route `GET /` wordt de lijst van alle shows van het huidige station ingeladen. Hieruit worden alle gekoppelde Users gehaald om zo een overzicht te bouwen
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/server.js#L229-L232
+
+Hierna worden alle Likes opgehaald en worden deze toegevoegd aan de JSON per User:
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/server.js#L255-L271
+
+
+**POST (Like)**
+Als een DJ wordt geliked wordt er een Like toegevoegd aan de mh_messages API endpoint
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/server.js#L317-L339
+
+
+**DELETE (Unlike)**
+
+Als er een DJ wordt ge-unliked wordt de like van de aangeklikte DJ van de ingelogde user verwijderd:
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/server.js#L344-L371
 
 
 ### HTML renderen met data
 De HTML wordt gerenderd met Liquid templates. Bijvoorbeeld, in de route `GET /` worden de DJ's geladen met de volgende code
+
+**deejays.liquid:**
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/views/deejays.liquid#L30-L32
+
+**dj.liquid**
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/views/partials/dj.liquid#L1-L36
+
+### UI states:
+
+Ik heb de volgende states ontworpen en gebouwd:
+
+#### Loading state
+
+Ontwerp: (SVG + blur)
+![image](https://github.com/user-attachments/assets/4a45d005-e711-4df2-8460-1d138cd6e41f)
+Tijdens de Loading state is een Pulse animatie te zien (dit is een animated gif). Als de loading state ingaat gaat het oude nummer omhoog of omlaag (afhankelijk van of je liked of unliked)
+
+Ik heb tijdens de bouwfase bedacht om de tekst en de button geen blur te geven, en om een rustigere animatie te kiezen t.o.v. het ontwerp.
+
+Hieronder een video van de aniamtie:
+
+
+https://github.com/user-attachments/assets/ac3e9f97-bc94-41dc-a5ce-dde4f8c31350
+
+
+#### Ideal state op element
+Tijdens de Ideal state komt het nieuwe nummer insliden van boven of onder (afhankelijk van of je liked of unliked)
+
+Hieronder een video van de animaties:
+
+https://github.com/user-attachments/assets/6fbe8ca5-b04b-4048-b186-38575839fa9d
+
+Hieronder is te zien hoe ik dat gedaan heb in code:
+
+**JS**
+
+Verwijder alle classes om mee te beginnen en voeg juiste class toe (like of unlike|)
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/862b186b430d535002b9a67db90443bc7cc58700/views/deejays.liquid#L67-L88
+
+Na de request, verwijder loading state classes
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/862b186b430d535002b9a67db90443bc7cc58700/views/deejays.liquid#L119-L123
+
+Voeg finished states toe om de animatie af te ronden:
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/862b186b430d535002b9a67db90443bc7cc58700/views/deejays.liquid#L130-L138
+
+
+**CSS**
+
+Hieronder de keyframe animateis om het nummer in en uit te sliden:
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/862b186b430d535002b9a67db90443bc7cc58700/public/css/deejays.css#L297-L347
+
+
+#### Error state (Edited)
+Als de Like/Unlike niet goed uitgevoerd wordt verschijnt een errorbalk met foutmelding
+
+https://github.com/user-attachments/assets/943aa4ae-2f1a-4199-be48-8435eb6c3a3b
+
+Hieronder is te zien hoe ik dit in Code heb gedaan:
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/862b186b430d535002b9a67db90443bc7cc58700/views/deejays.liquid#L90-L103
+
+## Empty state (DJ overzicht)
+
+Als er geen DJ's gekoppeld zijn aan dit radiostation komt er een Empty state:
+
+https://github.com/user-attachments/assets/08b95c2c-d1e5-47b8-b323-62bd86212582
+
+Hieronder is te zien hoe ik dat in code heb gedaan: (ELSE)
+
+https://github.com/DivaniNL/the-web-is-for-everyone-interactive-functionality/blob/5024b4c1ab8eecce5c2a2b83023c98112532857c/views/deejays.liquid#L28-L37
+
 
 ## Installatie
 
