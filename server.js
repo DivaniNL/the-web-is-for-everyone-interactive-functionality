@@ -366,7 +366,7 @@ app.post("/station/:name/djs/unlike/:id", async function (request, response) {
       },
     });
     console.log("status in server" + deleteResponse.status);
-    response.redirect(303, "/station/" + request.params.name + "/djs");
+    response.redirect(303, "/station/" + request.params.name + "/djs/likeStatus/"  + deleteResponse.status );
   }
 });
 
